@@ -1,11 +1,34 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from "react";
+import AppSidebar from "@/components/dashboard/AppSidebar";
+import TopHeader from "@/components/dashboard/TopHeader";
+import MainFeed from "@/components/dashboard/MainFeed";
+import RightPanel from "@/components/dashboard/RightPanel";
 
 const Index = () => {
+  useEffect(() => {
+    // Enable dark mode by default
+    document.documentElement.classList.add("dark");
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-background">
+      {/* Left Sidebar */}
+      <AppSidebar />
+
+      {/* Top Header */}
+      <TopHeader />
+
+      {/* Main Content Area */}
+      <div className="ml-64 pt-16 flex">
+        {/* Center Feed */}
+        <div className="flex-1 max-w-2xl">
+          <MainFeed />
+        </div>
+
+        {/* Right Panel */}
+        <div className="hidden xl:block">
+          <RightPanel />
+        </div>
       </div>
     </div>
   );
