@@ -1,21 +1,24 @@
 import { Home, Compass, Library, Bell, Sparkles, Settings, Plus, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link, useLocation } from "react-router-dom";
 
 const navItems = [
-  { title: "Home", icon: Home, active: true },
-  { title: "Explore", icon: Compass, active: false },
-  { title: "My Library", icon: Library, active: false },
-  { title: "Notifications", icon: Bell, active: false },
-  { title: "AI Recommendations", icon: Sparkles, active: false },
-  { title: "Settings", icon: Settings, active: false },
+  { title: "Home", icon: Home, path: "/" },
+  { title: "Explore", icon: Compass, path: "/explore" },
+  { title: "My Library", icon: Library, path: "/my-library" },
+  { title: "Notifications", icon: Bell, path: "/notifications" },
+  { title: "AI Recommendations", icon: Sparkles, path: "/ai-recommendations" },
+  { title: "Settings", icon: Settings, path: "/settings" },
 ];
 
 const AppSidebar = () => {
+  const location = useLocation();
+
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-sidebar-background border-r border-sidebar-border flex flex-col">
       {/* Logo */}
       <div className="p-6">
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
             <Sparkles className="w-5 h-5 text-primary-foreground" />
           </div>
@@ -23,32 +26,36 @@ const AppSidebar = () => {
             <h1 className="font-bold text-lg text-sidebar-foreground">DevLink</h1>
             <span className="text-xs text-primary font-medium">AI Hub</span>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 px-3">
         <ul className="space-y-1">
-          {navItems.map((item) => (
-            <li key={item.title}>
-              <button
-                className={cn(
-                  "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                  item.active
-                    ? "bg-primary/10 text-primary"
-                    : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-                )}
-              >
-                <item.icon className="w-5 h-5" />
-                {item.title}
-                {item.title === "Notifications" && (
-                  <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
-                    3
-                  </span>
-                )}
-              </button>
-            </li>
-          ))}
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <li key={item.title}>
+                <Link
+                  to={item.path}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                  )}
+                >
+                  <item.icon className="w-5 h-5" />
+                  {item.title}
+                  {item.title === "Notifications" && (
+                    <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+                      3
+                    </span>
+                  )}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Share Resource Button */}
